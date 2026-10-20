@@ -36,6 +36,9 @@ from utils.eval import evaluate
 from utils.model import GPT, GPTConfig, apply_rotary_emb, attention, norm, has_ve
 from utils.prepare_data import TRAIN_ROWS as DATA_ROWS, load_rows
 
+from graph_step import GraphStep
+from attention_credit import local_credit
+
 import torch._dynamo
 torch._dynamo.config.suppress_errors = True
 
@@ -814,7 +817,8 @@ class FastRelay(Relay):
                 values = values + gate * ve
             hub = target[r].view(t, h, hd).transpose(0, 1)
             if extra is None:
-                cq, ck, cv = fast_qkv_layer_kernel(q_raw, k_raw, values, hub, cos_t, sin_t, allowed, s.key_sigma)
+                cq, ck, cv = local_credit(q_raw, k_raw, values, hub, cos_t, sin_t, allowed, s.key_sigma,
+                                         window=window, precision="tf32rn", block=64)
             else:
                 hub_x = extra[r].view(t, h, hd).transpose(0, 1)
                 cq, ck, cv, cv_tot[r] = fast_qkv_layer_kernel(q_raw, k_raw, values, hub, cos_t, sin_t, allowed, s.key_sigma, hub_x)
@@ -1123,6 +1127,21 @@ def main():
     del model, optimizer, estimator
     torch.cuda.empty_cache()
     model, optimizer, estimator = init()
+    # Allocate the same zero optimizer state as the first eager update would.
+    # GraphStep's random-token warmup restores these states and the seeded model/RNGs.
+    for group in optimizer.optimizers[0].param_groups:
+        for p in group['params']:
+            lanes = 1 if p.size(0) >= p.size(1) else 0
+            optimizer.optimizers[0].state[p].update(
+                fast=torch.zeros_like(p, dtype=torch.float32),
+                slow=torch.zeros_like(p, dtype=torch.float32),
+                energy=torch.zeros_like(p.float().mean(lanes, keepdim=True)))
+    for group in optimizer.optimizers[1].param_groups:
+        for p in group['params']:
+            optimizer.optimizers[1].state[p].update(
+                step=torch.tensor(0.), exp_avg=torch.zeros_like(p), exp_avg_sq=torch.zeros_like(p))
+    engine = GraphStep(sys.modules[__name__], estimator, optimizer,
+                       noise[mine, :-1].contiguous(), noise[mine, 1:].contiguous())
 
     if rank == 0:
         print(f'speedrun: {steps}/{schedule} updates, GPUs={world}, settings={asdict(settings)}', flush=True)
@@ -1132,7 +1151,7 @@ def main():
     for step in range(1, steps + 1):
         batch = training[(step - 1) * BATCH: step * BATCH][mine].to(device)
         set_rate(optimizer, step)
-        loss = estimator.step(batch[:, :-1].contiguous(), batch[:, 1:].contiguous(), optimizer)
+        loss = engine.step(batch[:, :-1].contiguous(), batch[:, 1:].contiguous())
         torch.cuda.synchronize()
         elapsed = time.perf_counter() - start - paused
         record = dict(step=step, train_loss=round(loss, 4), train_seconds=round(elapsed, 2))
@@ -1145,6 +1164,7 @@ def main():
             log.write(json.dumps(record) + '\n')
             log.flush()
 
+    engine.close()
     estimator.close()
     state = {k: v.detach().cpu() for k, v in model.state_dict().items()}
     if rank == 0:
