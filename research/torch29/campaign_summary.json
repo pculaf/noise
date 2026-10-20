@@ -1,0 +1,943 @@
+{
+  "status": "stopped_at_user_request",
+  "source_pr": 29,
+  "source_revision": "866615d3a0332219b3d62ef8eaadc9c9d905d2fe",
+  "runs": [
+    {
+      "attempt": "torch29-batch-08",
+      "worker": "batch",
+      "status": "failed",
+      "function_seconds": 84.839051789,
+      "estimated_function_cost_usd": 0.10354097236536716,
+      "error": "RuntimeError('Worker exited 1')",
+      "summary": [
+        {
+          "t": 1024,
+          "sequences": 8,
+          "variant": "ported_PR29",
+          "error": {
+            "relative": 0.0,
+            "cosine": 1.0,
+            "max_abs": 0.0
+          },
+          "ms": 5.2645423889160154
+        },
+        {
+          "t": 1024,
+          "sequences": 8,
+          "variant": "paired",
+          "error": {
+            "relative": 0.0,
+            "cosine": 1.0,
+            "max_abs": 0.0
+          },
+          "ms": 3.305255889892578
+        }
+      ]
+    },
+    {
+      "attempt": "torch29-batch-11",
+      "worker": "batch",
+      "status": "completed",
+      "function_seconds": 156.209706207,
+      "estimated_function_cost_usd": 0.1906445738432711,
+      "summary": [
+        {
+          "t": 1024,
+          "sequences": 8,
+          "variant": "ported_PR29",
+          "error": {
+            "relative": 0.0,
+            "cosine": 1.0,
+            "max_abs": 0.0
+          },
+          "ms": 5.246366500854492
+        },
+        {
+          "t": 1024,
+          "sequences": 8,
+          "variant": "paired",
+          "error": {
+            "relative": 0.0,
+            "cosine": 1.0,
+            "max_abs": 0.0
+          },
+          "ms": 3.285753631591797
+        },
+        {
+          "t": 1024,
+          "sequences": 8,
+          "variant": "paired_batched_layers",
+          "error": {
+            "relative": 2.394056352130234e-05,
+            "cosine": 0.9999999997134248,
+            "max_abs": 0.0011768937110900879
+          },
+          "ms": 2.5525791168212892
+        },
+        {
+          "t": 2048,
+          "sequences": 4,
+          "variant": "ported_PR29",
+          "error": {
+            "relative": 0.0,
+            "cosine": 1.0,
+            "max_abs": 0.0
+          },
+          "ms": 7.663565063476563
+        },
+        {
+          "t": 2048,
+          "sequences": 4,
+          "variant": "paired",
+          "error": {
+            "relative": 0.0,
+            "cosine": 1.0,
+            "max_abs": 0.0
+          },
+          "ms": 4.801859283447266
+        },
+        {
+          "t": 2048,
+          "sequences": 4,
+          "variant": "paired_batched_layers",
+          "error": {
+            "relative": 2.901649814784503e-05,
+            "cosine": 0.9999999995790216,
+            "max_abs": 0.0018878281116485596
+          },
+          "ms": 3.81373291015625
+        }
+      ]
+    },
+    {
+      "attempt": "torch29-components-01",
+      "worker": "components",
+      "status": "completed",
+      "function_seconds": 41.398314072,
+      "estimated_function_cost_usd": 0.05052415842603168,
+      "summary": {
+        "torch": "2.10.0+cu128",
+        "gpu": "NVIDIA H100 80GB HBM3",
+        "attention": [
+          {
+            "t": 64,
+            "window": 32,
+            "errors": [
+              {
+                "relative": 0.0037666059307942426,
+                "cosine": 0.9999931230691212,
+                "max_abs": 0.009405970573425293
+              },
+              {
+                "relative": 0.003854556792227577,
+                "cosine": 0.9999926727012043,
+                "max_abs": 0.010059952735900879
+              },
+              {
+                "relative": 0.002982677093405505,
+                "cosine": 0.9999955912114331,
+                "max_abs": 0.010222911834716797
+              }
+            ]
+          },
+          {
+            "t": 128,
+            "window": 128,
+            "errors": [
+              {
+                "relative": 0.003761576271644706,
+                "cosine": 0.9999929508545808,
+                "max_abs": 0.006117284297943115
+              },
+              {
+                "relative": 0.0037547372781968954,
+                "cosine": 0.999993012480356,
+                "max_abs": 0.006557047367095947
+              },
+              {
+                "relative": 0.0033280925480474277,
+                "cosine": 0.999994470993549,
+                "max_abs": 0.018934965133666992
+              }
+            ]
+          }
+        ],
+        "readout": [
+          {
+            "scale": 0.001,
+            "error": {
+              "relative": 0.00392654199438143,
+              "cosine": 0.9999922933204031,
+              "max_abs": 0.00027117804853604103
+            }
+          },
+          {
+            "scale": 0.03,
+            "error": {
+              "relative": 0.00012898026374414594,
+              "cosine": 0.9999999916826278,
+              "max_abs": 0.00028370316560077935
+            }
+          }
+        ],
+        "timings": [
+          {
+            "tokens": 256,
+            "compiled_readout_ms": 0.10197279453277588
+          },
+          {
+            "tokens": 1024,
+            "compiled_readout_ms": 0.20823841094970702
+          },
+          {
+            "tokens": 1024,
+            "chunk": 16,
+            "block": 32,
+            "attention_ms": 0.17473759651184081
+          },
+          {
+            "tokens": 1024,
+            "chunk": 16,
+            "block": 64,
+            "attention_ms": 0.27629599571228025
+          },
+          {
+            "tokens": 1024,
+            "chunk": 32,
+            "block": 32,
+            "attention_ms": 0.2628400087356567
+          },
+          {
+            "tokens": 2048,
+            "chunk": 16,
+            "block": 32,
+            "attention_ms": 0.5789519786834717
+          },
+          {
+            "tokens": 2048,
+            "chunk": 16,
+            "block": 64,
+            "attention_ms": 0.5184256076812744
+          },
+          {
+            "tokens": 2048,
+            "chunk": 32,
+            "block": 32,
+            "attention_ms": 0.4928271770477295
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "attempt": "torch29-diagnostic-09",
+      "worker": "diagnostic",
+      "status": "completed",
+      "function_seconds": 67.134241328,
+      "estimated_function_cost_usd": 0.08193331348634433,
+      "summary": [
+        {
+          "test": "precise_mm",
+          "relative": 3.854488284105173e-07,
+          "finite": true
+        },
+        {
+          "test": "eager",
+          "step": 0,
+          "loss": 8.318967819213867,
+          "bad": [],
+          "max_norm": 1.4527262449264526
+        },
+        {
+          "test": "eager",
+          "step": 1,
+          "loss": 7.493642330169678,
+          "bad": [],
+          "max_norm": 1.7858211994171143
+        },
+        {
+          "test": "eager",
+          "step": 2,
+          "loss": 5.903043270111084,
+          "bad": [],
+          "max_norm": 1.5746936798095703
+        },
+        {
+          "test": "graph15",
+          "losses": [
+            8.318967819213867,
+            7.493642330169678,
+            5.903043270111084,
+            5.34805965423584,
+            4.879688262939453,
+            4.073042869567871,
+            3.127443552017212,
+            2.418400526046753,
+            1.7884905338287354,
+            1.403856873512268,
+            1.166576862335205,
+            1.007861614227295,
+            0.8750808238983154,
+            0.7605670690536499,
+            0.6390672922134399
+          ],
+          "finite": true
+        },
+        {
+          "test": "eager15",
+          "losses": [
+            8.318967819213867,
+            7.493642330169678,
+            5.90312385559082,
+            5.348054885864258,
+            4.879897117614746,
+            4.073545455932617,
+            3.127453327178955,
+            2.4189536571502686,
+            1.7883384227752686,
+            1.4041311740875244,
+            1.1669100522994995,
+            1.0079832077026367,
+            0.8752355575561523,
+            0.7612929344177246,
+            0.6392024159431458
+          ],
+          "max_gap": 0.000725865364074707
+        }
+      ]
+    },
+    {
+      "attempt": "torch29-distributed-07",
+      "worker": "distributed",
+      "status": "failed",
+      "function_seconds": 149.470377507,
+      "estimated_function_cost_usd": 1.3643177753630937,
+      "error": "RuntimeError('Worker exited 1')"
+    },
+    {
+      "attempt": "torch29-distributed-12",
+      "worker": "distributed",
+      "status": "failed",
+      "function_seconds": 148.05950628899998,
+      "estimated_function_cost_usd": 1.3514397943639795,
+      "error": "RuntimeError('Worker exited 1')"
+    },
+    {
+      "attempt": "torch29-screen-02",
+      "worker": "screen",
+      "status": "failed",
+      "function_seconds": 22.212620618,
+      "estimated_function_cost_usd": 0.02710917070703192,
+      "error": "RuntimeError('Worker exited 1')"
+    },
+    {
+      "attempt": "torch29-screen-03",
+      "worker": "screen",
+      "status": "failed",
+      "function_seconds": 51.759071297,
+      "estimated_function_cost_usd": 0.06316884097371069,
+      "error": "RuntimeError('Worker exited 1')",
+      "summary": {
+        "attention": [
+          {
+            "t": 1024,
+            "paired": false,
+            "chunk": 16,
+            "block": 64,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0000000000000002,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.42966561317443847
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 16,
+            "block": 32,
+            "errors": [
+              {
+                "relative": 3.252570400035484e-08,
+                "cosine": 0.9999999999999994,
+                "max_abs": 1.1920928955078125e-07
+              },
+              {
+                "relative": 5.337500365836247e-08,
+                "cosine": 0.9999999999999987,
+                "max_abs": 2.384185791015625e-07
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.3065840005874634
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 16,
+            "block": 64,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0000000000000002,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.28023838996887207
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 32,
+            "block": 32,
+            "errors": [
+              {
+                "relative": 3.80113740694464e-08,
+                "cosine": 0.9999999999999993,
+                "max_abs": 1.1920928955078125e-07
+              },
+              {
+                "relative": 5.627328919196414e-08,
+                "cosine": 0.9999999999999986,
+                "max_abs": 2.384185791015625e-07
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.27174880504608157
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 32,
+            "block": 64,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0000000000000002,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.5345151901245118
+          },
+          {
+            "t": 2048,
+            "paired": false,
+            "chunk": 16,
+            "block": 64,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 1.176414394378662
+          },
+          {
+            "t": 2048,
+            "paired": true,
+            "chunk": 16,
+            "block": 32,
+            "errors": [
+              {
+                "relative": 3.568130557377504e-08,
+                "cosine": 0.9999999999999993,
+                "max_abs": 1.1920928955078125e-07
+              },
+              {
+                "relative": 6.844123466904692e-08,
+                "cosine": 0.9999999999999976,
+                "max_abs": 3.5762786865234375e-07
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.7654528141021728
+          },
+          {
+            "t": 2048,
+            "paired": true,
+            "chunk": 16,
+            "block": 64,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.7110960006713867
+          }
+        ],
+        "readout": []
+      }
+    },
+    {
+      "attempt": "torch29-screen-05",
+      "worker": "screen",
+      "status": "completed",
+      "function_seconds": 53.987891983,
+      "estimated_function_cost_usd": 0.06588898289173252,
+      "summary": {
+        "attention": [
+          {
+            "t": 1024,
+            "paired": false,
+            "chunk": 16,
+            "block": 64,
+            "early": false,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0000000000000002,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.42610559463500974
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 16,
+            "block": 64,
+            "early": false,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0000000000000002,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.27757599353790285
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 16,
+            "block": 64,
+            "early": true,
+            "errors": [
+              {
+                "relative": 3.8381342771424225e-07,
+                "cosine": 0.9999999999999413,
+                "max_abs": 4.470348358154297e-07
+              },
+              {
+                "relative": 1.711035621057763e-06,
+                "cosine": 0.9999999999997263,
+                "max_abs": 7.152557373046875e-06
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.3385535955429077
+          },
+          {
+            "t": 1024,
+            "paired": true,
+            "chunk": 32,
+            "block": 32,
+            "early": true,
+            "errors": [
+              {
+                "relative": 4.0741821293373096e-07,
+                "cosine": 0.9999999999999356,
+                "max_abs": 5.066394805908203e-07
+              },
+              {
+                "relative": 1.765642355198873e-06,
+                "cosine": 0.9999999999996947,
+                "max_abs": 6.9141387939453125e-06
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.33926239013671877
+          },
+          {
+            "t": 2048,
+            "paired": false,
+            "chunk": 16,
+            "block": 64,
+            "early": false,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 1.167243194580078
+          },
+          {
+            "t": 2048,
+            "paired": true,
+            "chunk": 16,
+            "block": 64,
+            "early": false,
+            "errors": [
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 1.0,
+                "max_abs": 0.0
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.7135039806365967
+          },
+          {
+            "t": 2048,
+            "paired": true,
+            "chunk": 16,
+            "block": 64,
+            "early": true,
+            "errors": [
+              {
+                "relative": 7.301053201623189e-07,
+                "cosine": 0.9999999999997913,
+                "max_abs": 5.662441253662109e-07
+              },
+              {
+                "relative": 3.553515062668001e-06,
+                "cosine": 0.9999999999989921,
+                "max_abs": 1.0251998901367188e-05
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.8697471618652344
+          },
+          {
+            "t": 2048,
+            "paired": true,
+            "chunk": 32,
+            "block": 32,
+            "early": true,
+            "errors": [
+              {
+                "relative": 7.531362514514239e-07,
+                "cosine": 0.9999999999997814,
+                "max_abs": 5.960464477539062e-07
+              },
+              {
+                "relative": 3.602401269740109e-06,
+                "cosine": 0.999999999998937,
+                "max_abs": 1.0013580322265625e-05
+              },
+              {
+                "relative": 0.0,
+                "cosine": 0.9999999999999999,
+                "max_abs": 0.0
+              }
+            ],
+            "ms": 0.8847824096679687
+          }
+        ],
+        "readout": [
+          {
+            "scale": 0.001,
+            "variant": "ported",
+            "error": {
+              "relative": 0.004179177697712698,
+              "cosine": 0.9999912691921012,
+              "max_abs": 0.00026384482551192884
+            }
+          },
+          {
+            "scale": 0.001,
+            "variant": "stable",
+            "error": {
+              "relative": 1.0413508692628543e-05,
+              "cosine": 0.9999999999457861,
+              "max_abs": 1.080872467765226e-06
+            }
+          },
+          {
+            "scale": 0.001,
+            "variant": "fused",
+            "error": {
+              "relative": 9.652137611632352e-06,
+              "cosine": 0.9999999999534193,
+              "max_abs": 8.872128300606297e-07
+            }
+          },
+          {
+            "scale": 0.03,
+            "variant": "ported",
+            "error": {
+              "relative": 0.0001266526086070081,
+              "cosine": 0.9999999919869458,
+              "max_abs": 0.0002825604364906642
+            }
+          },
+          {
+            "scale": 0.03,
+            "variant": "stable",
+            "error": {
+              "relative": 1.1475506295782052e-05,
+              "cosine": 0.9999999999341567,
+              "max_abs": 4.251202855010128e-05
+            }
+          },
+          {
+            "scale": 0.03,
+            "variant": "fused",
+            "error": {
+              "relative": 1.1258420936785817e-05,
+              "cosine": 0.999999999936624,
+              "max_abs": 3.345349811123555e-05
+            }
+          },
+          {
+            "tokens": 512,
+            "variant": "PR29_products",
+            "ms": 0.13566240072250366
+          },
+          {
+            "tokens": 512,
+            "variant": "fused",
+            "bm": 16,
+            "bp": 32,
+            "bv": 128,
+            "ms": 0.2855871915817261
+          },
+          {
+            "tokens": 512,
+            "variant": "fused",
+            "bm": 32,
+            "bp": 32,
+            "bv": 64,
+            "ms": 1.1449824333190919
+          },
+          {
+            "tokens": 512,
+            "variant": "fused",
+            "bm": 16,
+            "bp": 64,
+            "bv": 128,
+            "ms": 0.31075520515441896
+          },
+          {
+            "tokens": 1024,
+            "variant": "PR29_products",
+            "ms": 0.20978240966796874
+          },
+          {
+            "tokens": 1024,
+            "variant": "fused",
+            "bm": 16,
+            "bp": 32,
+            "bv": 128,
+            "ms": 0.5705696105957031
+          },
+          {
+            "tokens": 1024,
+            "variant": "fused",
+            "bm": 32,
+            "bp": 32,
+            "bv": 64,
+            "ms": 2.278955268859863
+          },
+          {
+            "tokens": 1024,
+            "variant": "fused",
+            "bm": 16,
+            "bp": 64,
+            "bv": 128,
+            "ms": 0.6096911907196045
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "attempt": "torch29-train-04",
+      "worker": "train_smoke",
+      "status": "failed",
+      "function_seconds": 75.953421886,
+      "estimated_function_cost_usd": 0.09269659420654985,
+      "error": "RuntimeError('Worker exited 1')",
+      "summary": {
+        "warmup": [
+          {
+            "step": 0,
+            "loss": 8.318967819213867,
+            "seconds": 67.098732568
+          },
+          {
+            "step": 1,
+            "loss": 7.493580341339111,
+            "seconds": 0.020814590999989946
+          }
+        ]
+      }
+    },
+    {
+      "attempt": "torch29-train-06",
+      "worker": "train_smoke",
+      "status": "completed",
+      "function_seconds": 93.26535241799999,
+      "estimated_function_cost_usd": 0.11382476670502392,
+      "summary": {
+        "warmup": [
+          {
+            "step": 0,
+            "loss": 8.318967819213867,
+            "seconds": 83.05662121099999
+          },
+          {
+            "step": 1,
+            "loss": 7.493478775024414,
+            "seconds": 0.033594961000005696
+          }
+        ],
+        "losses": [
+          8.318967819213867,
+          7.979229927062988,
+          7.744838714599609,
+          7.59245491027832,
+          7.301978588104248,
+          7.2418317794799805,
+          7.480967044830322,
+          7.355304718017578,
+          7.189797401428223,
+          7.10546350479126
+        ],
+        "mean_step_ms": 9.175927300000808,
+        "status": "completed"
+      }
+    }
+  ],
+  "budget": {
+    "cap_usd": 9.0,
+    "conservative_charge_usd": 6.642824343332137,
+    "measured_function_cost_usd": 3.5050889433321366,
+    "cancelled_unallocated_attempts": [
+      "torch29-distributed-10"
+    ]
+  },
+  "distributed_outcome": {
+    "attempt": "torch29-distributed-12",
+    "completed_updates": 975,
+    "passed_final_rank_hash_check": false,
+    "validation_loss": null,
+    "final_checkpoint_saved": false,
+    "last_logged_step": 915,
+    "last_logged_seconds": 8.33137763000002,
+    "last_logged_training_loss": 4.201230525970459,
+    "paired_estimator_max_relative_error": 6.023650911402001e-08,
+    "note": "Failure at hash check before metric/checkpoint write and final evaluation; no qualifying record."
+  }
+}
